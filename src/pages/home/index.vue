@@ -20,8 +20,18 @@
       </div>
     </div>
     <!-- 商品列表 -->
-    <div class="floor">
-
+    <div class="floor" v-for="(item,index) in floor" :key="index">
+      <div class="floor-title">
+        <img :src="item.floor_title.image_src" mode='aspectFill'>
+      </div>
+      <div class="floor-content">
+        <dic class="left">
+          <img :src="item.product_list[0].image_src" mode='aspectFill'>
+        </dic>
+        <dic class="right">
+          <img v-if="i>0" v-for="(img,i) in item.product_list" :key="i" :src="img.image_src" mode='aspectFill'>
+        </dic>
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +42,8 @@ export default {
   data() {
     return {
       swiper: [],
-      menu: []
+      menu: [],
+      floor: []
     };
   },
   methods: {
@@ -57,7 +68,7 @@ export default {
       //   this.swiper = message
       // })
       // async+await 处理
-      this.swiper = await this.queryData("home/swiperdata")
+      this.swiper = await this.queryData("home/swiperdata");
     },
     // 获取首页菜单选项
     async menuData() {
@@ -70,17 +81,22 @@ export default {
       //     that.menu = message;
       //   }
       // });
-      this.menu = await this.queryData("home/catitems")
+      this.menu = await this.queryData("home/catitems");
+    },
+    // 获取楼层数据
+    async floorData() {
+      this.floor = await this.queryData("home/floordata");
     }
   },
   mounted() {
     this.swiperData();
     this.menuData();
+    this.floorData();
   }
 };
 </script>
 
-<style>
+<style scoped lang='scss'>
 .search-bar {
   background-color: #f00;
   padding: 20rpx;
@@ -93,15 +109,74 @@ export default {
   color: #fef;
   font-size: 16px;
 }
+
 .slide-image {
   width: 750rpx;
 }
+
 .menu {
   display: flex;
   justify-content: space-around;
+  .menu-item {
+    img {
+      width: 128rpx;
+      height: 140rpx;
+    }
+  }
 }
-.menu-item img {
-  width: 128rpx;
-  height: 140rpx;
+
+.floor {
+  margin-top: 20rpx;
+  .floor-title {
+    width: 100%;
+    img {
+      width: 100%;
+      height: 60rpx;
+      display: block;
+    }
+  }
+  .floor-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20rpx;
+    box-sizing: border-box;
+    .left {
+      img {
+        width: 232rpx;
+        height: 385rpx;
+        border-radius: 4px;
+      }
+    }
+    .right {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-left: 14rpx;
+      img {
+        width: 232rpx;
+        height: 188rpx;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+.toTop {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  position: fixed;
+  right: 40rpx;
+  bottom: 40rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  p {
+    font-size: 14px;
+  }
 }
 </style>
