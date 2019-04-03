@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 搜索框 -->
-    <div class="search-bar">
+    <search-bar></search-bar>
+    <!-- <div class="search-bar">
       <div class="search-input">
-        <!-- <icon type="search" color="#f40" size='16px'></icon> -->
         <input placeholder="搜索">
       </div>
-    </div>
+    </div> -->
     <!-- 轮播图 -->
     <swiper indicator-dots='true'>
       <swiper-item :key="item.goods_id" v-for="item in swiper">
@@ -40,9 +40,9 @@
     </div>
   </div>
 </template>
-
 <script>
 import request from "../../utils/request.js";
+import searchBar from '../../components/searchbar'
 export default {
   data() {
     return {
@@ -51,6 +51,9 @@ export default {
       floor: [],
       isShow: false
     };
+  },
+  components:{
+    searchBar
   },
   methods: {
     async queryData(path) {
@@ -127,5 +130,6 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-@import url('./main.scss');
+  @import 'main.scss'
 </style>
+
