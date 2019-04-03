@@ -33,6 +33,11 @@
         </dic>
       </div>
     </div>
+    <!-- 回到顶部按钮 -->
+    <div class="toTop" @click="totopHandle" v-if="isShow">
+      ︿
+      <p>顶部</p>
+    </div>
   </div>
 </template>
 
@@ -43,7 +48,8 @@ export default {
     return {
       swiper: [],
       menu: [],
-      floor: []
+      floor: [],
+      isShow: false
     };
   },
   methods: {
@@ -51,47 +57,71 @@ export default {
       let res = await request(path);
       return res.data.message;
     },
-    //   获取首页轮播图数据
-    async swiperData() {
-      // var that = this;
-      // mpvue.request({
-      //   url: "https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata",
-      //   success: function(res) {
-      //     let { message } = res.data;
-      //     that.swiper = message;
-      //   }
-      // });
-      // 通过promise获取结果处理
-      // request(url).then(res=>{
-      //   // console.log(res);
-      //   let {message} = res.data
-      //   this.swiper = message
-      // })
-      // async+await 处理
-      this.swiper = await this.queryData("home/swiperdata");
+    // 代码未封装之前的步骤~
+    BestView(){
+      // //   获取首页轮播图数据
+      // async swiperData() {
+      //   // var that = this;
+      //   // mpvue.request({
+      //   //   url: "https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata",
+      //   //   success: function(res) {
+      //   //     let { message } = res.data;
+      //   //     that.swiper = message;
+      //   //   }
+      //   // });
+      //   // 通过promise获取结果处理
+      //   // request(url).then(res=>{
+      //   //   // console.log(res);
+      //   //   let {message} = res.data
+      //   //   this.swiper = message
+      //   // })
+      //   // async+await 处理
+      //   this.swiper = await this.queryData("home/swiperdata");
+      // },
+      // // 获取首页菜单选项
+      // async menuData() {
+      //   // var that = this;
+      //   // mpvue.request({
+      //   //   url: "https://www.zhengzhicheng.cn/api/public/v1/home/catitems",
+      //   //   success: function(res) {e
+      //   //     console.log(res);
+      //   //     let { message } = res.data;
+      //   //     that.menu = message;
+      //   //   }
+      //   // });
+      //   this.menu = await this.queryData("home/catitems");
+      // },
+      // // 获取楼层数据
+      // async floorData() {
+      //   this.floor = await this.queryData("home/floordata");
+      // },
+      // 返回顶部
     },
-    // 获取首页菜单选项
-    async menuData() {
-      // var that = this;
-      // mpvue.request({
-      //   url: "https://www.zhengzhicheng.cn/api/public/v1/home/catitems",
-      //   success: function(res) {e
-      //     console.log(res);
-      //     let { message } = res.data;
-      //     that.menu = message;
-      //   }
-      // });
-      this.menu = await this.queryData("home/catitems");
+    totopHandle() {
+      mpvue.pageScrollTo({
+        scrollTop: 0
+      });
     },
-    // 获取楼层数据
-    async floorData() {
+    async initData() {
       this.floor = await this.queryData("home/floordata");
+      this.swiper = await this.queryData("home/swiperdata");
+      this.menu = await this.queryData("home/catitems");
     }
   },
+
   mounted() {
-    this.swiperData();
-    this.menuData();
-    this.floorData();
+    // this.swiperData();
+    // this.menuData();
+    // this.floorData();
+    this.initData();
+  },
+  //小程序生命周期,监听页面滚动
+  onPageScroll(event) {
+    this.isShow = event.scrollTop > 50;
+  },
+  //小程序生命周期,下拉刷新,重新加载页面数据
+  onPullDownRefresh() {
+    this.initData();
   }
 };
 </script>
@@ -167,7 +197,7 @@ export default {
   width: 100rpx;
   height: 100rpx;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.5);
   position: fixed;
   right: 40rpx;
   bottom: 40rpx;
