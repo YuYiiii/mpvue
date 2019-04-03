@@ -19,10 +19,15 @@
         <img :src="item.image_src" alt="">
       </div>
     </div>
+    <!-- 商品列表 -->
+    <div class="floor">
+
+    </div>
   </div>
 </template>
 
 <script>
+import request from "../../utils/request.js";
 export default {
   data() {
     return {
@@ -31,28 +36,41 @@ export default {
     };
   },
   methods: {
+    async queryData(path) {
+      let res = await request(path);
+      return res.data.message;
+    },
     //   获取首页轮播图数据
-    swiperData() {
-      var that = this;
-      mpvue.request({
-        url: "https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata",
-        success: function(res) {
-          let { message } = res.data;
-          that.swiper = message;
-        }
-      });
+    async swiperData() {
+      // var that = this;
+      // mpvue.request({
+      //   url: "https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata",
+      //   success: function(res) {
+      //     let { message } = res.data;
+      //     that.swiper = message;
+      //   }
+      // });
+      // 通过promise获取结果处理
+      // request(url).then(res=>{
+      //   // console.log(res);
+      //   let {message} = res.data
+      //   this.swiper = message
+      // })
+      // async+await 处理
+      this.swiper = await this.queryData("home/swiperdata")
     },
     // 获取首页菜单选项
-    menuData() {
-      var that = this;
-      mpvue.request({
-        url: "https://www.zhengzhicheng.cn/api/public/v1/home/catitems",
-        success: function(res) {
-          console.log(res);
-          let { message } = res.data;
-          that.menu = message;
-        }
-      });
+    async menuData() {
+      // var that = this;
+      // mpvue.request({
+      //   url: "https://www.zhengzhicheng.cn/api/public/v1/home/catitems",
+      //   success: function(res) {e
+      //     console.log(res);
+      //     let { message } = res.data;
+      //     that.menu = message;
+      //   }
+      // });
+      this.menu = await this.queryData("home/catitems")
     }
   },
   mounted() {
