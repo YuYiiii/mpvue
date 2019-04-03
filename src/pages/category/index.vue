@@ -9,19 +9,30 @@
                     {{item.cat_name}}
                 </div>
             </div>
-            <div class="right"></div>
+            <div class="right">
+                <div class="brand-item" v-for="(item,index) in rightData" :key="index">
+                    <div class="brand-title">{{item.cat_name}}</div>
+                    <div class="brand-list">
+                        <div class="brand" v-for="(img,index1) in item.children" :key="index1">
+                            <img :src="img.cat_icon" alt="">
+                            <p>{{img.cat_name}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import searchBar from "@/components/searchbar";
-import request from '../../utils/request';
+import request from "../../utils/request";
 export default {
   data() {
     return {
-        cate:[],
-        currentIndex:0
+      cate: [],
+      currentIndex: 0,
+      rightData: []
     };
   },
   components: {
@@ -29,13 +40,16 @@ export default {
   },
   methods: {
     async catedata() {
-        let ret = await request('categories')
-        this.cate = ret.data.message
-        console.log(ret);
+      let ret = await request("categories");
+      this.cate = ret.data.message;
+    //   console.log(ret);
     }
   },
-  mounted(){
-      this.catedata()
+  async mounted() {
+    await this.catedata();
+    // 从全部分类数据根据当前索引取出需要的数据
+    this.rightData = this.cate[this.currentIndex].children
+    console.log(this.rightData);
   }
 };
 </script>
