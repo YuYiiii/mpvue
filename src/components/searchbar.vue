@@ -1,15 +1,16 @@
 <template>
     <div class="search-bar">
         <div class="search-input">
-            <icon type="search" color="#f40" size='16px'></icon>
-            <span>搜索</span>
+            <navigator url='/pages/search/main'>
+                <icon type="search" color="#f40" size='16px'></icon>
+                <span>搜索</span>
+            </navigator>
         </div>
     </div>
 </template>
 
 <script>
-export default {
-};
+export default {};
 </script>
 
 <style scoped lang="scss">

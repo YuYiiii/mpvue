@@ -41,6 +41,7 @@ export default {
   computed:{
       getRightData(){
         //   从cate数组中获取一部分数据,根据当前的索引得到的
+        //   计算属性的应用场景:从既有数据中获取几部分数据或者对已有数据进行加工,形成新的格式,且计算属性的结果依赖于data中数据的变化
           let ret = this.cate.length>0 && this.cate[this.currentIndex].children
           return ret
       }
