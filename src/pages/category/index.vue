@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="right">
-                <div class="brand-item" v-for="(item,index) in rightData" :key="index">
+                <div class="brand-item" v-for="(item,index) in getRightData" :key="index">
                     <div class="brand-title">{{item.cat_name}}</div>
                     <div class="brand-list">
                         <div class="brand" v-for="(img,index1) in item.children" :key="index1">
@@ -37,6 +37,13 @@ export default {
   },
   components: {
     searchBar
+  },
+  computed:{
+      getRightData(){
+        //   从cate数组中获取一部分数据,根据当前的索引得到的
+          let ret = this.cate.length>0 && this.cate[this.currentIndex].children
+          return ret
+      }
   },
   methods: {
     async catedata() {

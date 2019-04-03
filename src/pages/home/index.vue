@@ -8,7 +8,7 @@
       </div>
     </div> -->
     <!-- 轮播图 -->
-    <swiper indicator-dots='true'>
+    <swiper indicator-dots='true' indicator-color='rgba(255, 0, 0, .3)' indicator-active-color='#000' autoplay='true' circular='true'>
       <swiper-item :key="item.goods_id" v-for="item in swiper">
         <image :src="item.image_src" class="slide-image" />
       </swiper-item>
@@ -42,7 +42,7 @@
 </template>
 <script>
 import request from "../../utils/request.js";
-import searchBar from '../../components/searchbar'
+import searchBar from "../../components/searchbar";
 export default {
   data() {
     return {
@@ -52,7 +52,7 @@ export default {
       isShow: false
     };
   },
-  components:{
+  components: {
     searchBar
   },
   methods: {
@@ -61,7 +61,7 @@ export default {
       return res.data.message;
     },
     // 代码未封装之前的步骤~
-    BestView(){
+    BestView() {
       // //   获取首页轮播图数据
       // async swiperData() {
       //   // var that = this;
@@ -130,6 +130,6 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-  @import 'main.scss'
+@import "main.scss";
 </style>
 
