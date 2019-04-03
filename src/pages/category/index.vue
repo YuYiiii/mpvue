@@ -5,7 +5,7 @@
         <!-- 菜单和内容区域 -->
         <div class="content">
             <div class="left">
-                <div :class="{active:currentIndex==index}" v-for="(item,index) in cate" :key="index" class="menu-item">
+                <div @click="changeBrand(index)" :class="{active:currentIndex==index}" v-for="(item,index) in cate" :key="index" class="menu-item">
                     {{item.cat_name}}
                 </div>
             </div>
@@ -42,13 +42,20 @@ export default {
     async catedata() {
       let ret = await request("categories");
       this.cate = ret.data.message;
-    //   console.log(ret);
+      //   console.log(ret);
+    },
+    // 根据索引点击切换对应数据
+    changeBrand(index) {
+        console.log(index);
+        
+      this.currentIndex = index;
+      this.rightData = this.cate[this.currentIndex].children;
     }
   },
   async mounted() {
     await this.catedata();
     // 从全部分类数据根据当前索引取出需要的数据
-    this.rightData = this.cate[this.currentIndex].children
+    this.rightData = this.cate[this.currentIndex].children;
     console.log(this.rightData);
   }
 };
