@@ -55,8 +55,9 @@
 				},
 				{
 					"id": -1,
-					"name": "商品详情~~~~~~~~~",
-					"pathName": "pages/goods_detail/main",
+					"name": "购物车",
+					"pathName": "pages/cart/main",
+					"query": "",
 					"scene": null
 				}
 			]
