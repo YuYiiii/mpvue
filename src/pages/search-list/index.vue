@@ -35,35 +35,68 @@
 </template>
 
 <script>
-import request from "../../utils/request.js";
-import searchBar from "@/components/searchbar.vue";
+import searchBar from '../../components/searchbar'
+import request from '../../utils/request.js'
+
 export default {
-  data() {
+  data () {
     return {
-      keyword: "",
-      tabNames: ["综合", "销量", "价格"],
+      tabNames: ['综合', '销量', '价格'],
+      keyword: '',
       currentIndex: 0,
       list: [],
       pagenum: 1,
-      total: 0
-    };
+      total: 0,
+      // 保证接口调用完成之后才可以再次调用接口，如果接口正在获取数据，那么在这个过程中是不允许再次触发接口调用
+      isLoading: false,
+      hasMore: false
+    }
   },
   methods: {
     tabHandle(index) {
       //   修改当前tab的索引
       this.currentIndex = index;
+    },
+    async loadData() {
+      // 如果没有更多数据,就禁止请求
+      //是否加载数据完成
+      if (this. hasMore || this. isLoading) {
+        return;
+      }
+      //   禁止再次触发接口调用
+      this.isLoading = true;
+      // 根据关键字加载匹配的商品列表数据
+      let res = await request("goods/search", "get", {
+        query: this.keyword,
+        pagenum: this.pagenum
+      });
+      let { message } = res.data;
+      let goods = [...this.list, ...message.goods];
+      this.list = goods;
+      this.pagenum = parseInt(message.pagenum);
+      this.total = message.total;
+      if (this.list.length >= this.total) {
+        //  进来则证明没有更多数据了
+        this.hasMore = true;
+      }
+      // 加载完成数据之后使得页码加一
+      this.pagenum = this.pagenum + 1;
+      //   接口数据返回之后才允许在再次发起请求
+      this.isLoading = false;
     }
   },
   //   小程序的生命周期------路径处理-展示在input中默认显示的值
-  async onLoad(param) {
+  onLoad(param) {
     //   参数param表示路径传递过来的参数
     this.keyword = param.query;
-    let res = await request("goods/search", "get", {
-      query: param.query
-    });
-    this.list = res.data.message.goods;
-    this.pagenum = res.data.message.pagenum;
-    this.total = res.data.message.total;
+    // 页面初次展示的时候调用该方法加载数据
+    this.loadData();
+  },
+  onReachBottom() {
+    //   用户下拉触底事件-滚动条触底触发事件
+    // console.log(41411);
+    this.loadData();
+    // console.log(this.pagenum);
   },
   components: {
     searchBar

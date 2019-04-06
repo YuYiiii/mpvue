@@ -38,6 +38,7 @@ export default {
       keyword: "",
       searchResult: [],
       isLoading: false,
+      // 前边的数组有值则取有值的数组，如果数组被清空或者数组本身没有值则就取后边数组的值
       keywordHistory: mpvue.getStorageSync("keyword") || []
       // timer: null
     };
